@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Media to Market</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --ink:#0E141B;
+  --ink-2:#161E27;
+  --line:#28323D;
+  --text:#DCE3E8;
+  --text-dim:#8493A0;
+  --amber:#E2A63B;
+  --red:#C4534A;
+  --teal:#4F8C86;
+  --paper:#EDE7D8;
+}
+html{overflow-x:hidden; width:100%;}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  width:100%;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+
+/* ---- Ticker (signature element) ---- */
+.ticker-wrap{
+  border-bottom:1px solid var(--line);
+  background:var(--ink-2);
+  overflow:hidden;
+  white-space:nowrap;
+  padding:9px 0;
+}
+.ticker-track{
+  display:inline-flex;
+  gap:40px;
+  animation:scroll 38s linear infinite;
+  padding-left:100%;
+}
+@keyframes scroll{
+  from{transform:translateX(0);}
+  to{transform:translateX(-100%);}
+}
+.ticker-item{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:0.02em;
+  color:var(--text-dim);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.ticker-dot{width:6px; height:6px; border-radius:50%; flex-shrink:0;}
+
+/* ---- Header ---- */
+header{
+  max-width:960px;
+  margin:0 auto;
+  padding:56px 24px 32px;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:14px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:clamp(38px,6vw,58px);
+  line-height:1.02;
+  letter-spacing:-0.01em;
+}
+h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--text-dim);
+}
+.subhead{
+  margin-top:16px;
+  max-width:540px;
+  color:var(--text-dim);
+  font-size:15px;
+  line-height:1.6;
+}
+
+/* ---- Controls ---- */
+.controls{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 24px 40px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+button.scan-btn{
+  background:var(--amber);
+  color:var(--ink);
+  border:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.04em;
+  padding:13px 22px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:transform 0.15s ease, background 0.15s ease;
+}
+button.scan-btn:hover:not(:disabled){background:#EEB65A; transform:translateY(-1px);}
+button.scan-btn:disabled{opacity:0.5; cursor:not-allowed;}
+button.ghost-btn{
+  background:none;
+  border:1px solid var(--line);
+  color:var(--text-dim);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.04em;
+  padding:12px 16px;
+  border-radius:3px;
+  cursor:pointer;
+}
+button.ghost-btn:hover{border-color:var(--text-dim); color:var(--text);}
+.status-line{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:var(--text-dim);
+}
+.status-line .pulse{
+  display:inline-block;
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--amber);
+  margin-right:8px;
+  animation:pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.25;}}
+
+/* ---- Sector pattern section ---- */
+.pattern-section{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 24px 48px;
+}
+.pattern-card{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:24px 26px 12px;
+}
+.pattern-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+.pattern-title{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:20px;
+}
+.pattern-note{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+}
+.chart-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:24px;
+  align-items:stretch;
+}
+.chart-box{position:relative; height:240px; min-width:0;}
+.chart-box canvas{
+  display:block;
+  width:100% !important;
+  height:100% !important;
+}
+.chart-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  margin-bottom:10px;
+}
+.api-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+}
+.api-input{
+  background:var(--ink);
+  border:1px solid var(--line);
+  color:var(--text);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  padding:10px 12px;
+  border-radius:3px;
+  min-width:220px;
+}
+.api-input:focus{outline:none; border-color:var(--amber);}
+.ticker-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--amber);
+}
+
+/* ---- Feed ---- */
+main{max-width:960px; margin:0 auto; padding:0 24px 100px;}
+.empty-state{
+  border:1px dashed var(--line);
+  border-radius:6px;
+  padding:48px 24px;
+  text-align:center;
+  color:var(--text-dim);
+  font-size:14px;
+  line-height:1.7;
+}
+.card{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:26px 28px;
+  margin-bottom:16px;
+  position:relative;
+}
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:14px;
+}
+.speaker{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:20px;
+}
+.meta{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+  margin-top:4px;
+}
+.intensity-badge{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  padding:5px 10px;
+  border-radius:20px;
+  white-space:nowrap;
+  border:1px solid currentColor;
+  flex-shrink:0;
+}
+.statement{
+  font-size:15px;
+  line-height:1.65;
+  color:var(--text);
+  margin-bottom:16px;
+}
+.meter{
+  height:4px;
+  background:var(--line);
+  border-radius:2px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.meter-fill{
+  height:100%;
+  border-radius:2px;
+}
+.row-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  margin-bottom:6px;
+}
+.sectors{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:16px;
+}
+.chip{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  background:var(--ink);
+  border:1px solid var(--line);
+  padding:4px 10px;
+  border-radius:20px;
+  color:var(--text-dim);
+}
+.market-read{
+  font-size:14px;
+  line-height:1.65;
+  color:var(--text);
+  border-top:1px solid var(--line);
+  padding-top:14px;
+}
+.market-read .label{color:var(--amber); font-weight:600;}
+.precedent{
+  font-size:13px;
+  line-height:1.6;
+  color:var(--text-dim);
+  margin-top:10px;
+  font-style:italic;
+}
+footer{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 24px 60px;
+  color:var(--text-dim);
+  font-size:12px;
+  line-height:1.7;
+  border-top:1px solid var(--line);
+  padding-top:24px;
+}
+.error-box{
+  border:1px solid var(--red);
+  color:var(--red);
+  border-radius:6px;
+  padding:16px 20px;
+  font-size:13px;
+  margin-bottom:16px;
+  font-family:'IBM Plex Mono',monospace;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item"><span class="ticker-dot" style="background:var(--text-dim)"></span>PRESS SCAN NOW TO PULL TODAY'S RHETORIC FEED</span>
+  </div>
+</div>
+
+<header>
+  <div class="eyebrow">MEDIA TO MARKET · PERSONAL DASHBOARD</div>
+  <h1>Where rhetoric<br><em>becomes signal.</em></h1>
+  <p class="subhead">AI scans the last week's current-affairs statements from officials, central bankers, and market-moving figures, checks what markets actually did afterward, and reads what it implies going forward.</p>
+</header>
+
+<div class="controls">
+  <button class="scan-btn" id="scanBtn" onclick="runScan()">RUN WEEKLY SCAN</button>
+  <button class="ghost-btn" id="clearBtn" onclick="clearHistory()">CLEAR HISTORY</button>
+  <button class="ghost-btn" id="exportBtn" onclick="exportHistory()">COPY AS SPREADSHEET ROWS</button>
+  <div class="status-line" id="statusLine"></div>
+</div>
+
+<div class="pattern-section">
+  <div class="pattern-card">
+    <div class="pattern-head">
+      <div class="pattern-title">Sector Pattern Tracker</div>
+      <div class="pattern-note" id="historyNote">No scan history yet</div>
+    </div>
+    <div class="chart-row">
+      <div>
+        <div class="chart-label">AI rhetoric-intensity trend by sector, across all your scans</div>
+        <div class="chart-box"><canvas id="trendChart"></canvas></div>
+      </div>
+      <div>
+        <div class="chart-label">Sectors flagged in this scan</div>
+        <div class="chart-box"><canvas id="currentChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<main id="main">
+  <div class="empty-state">No scan run yet. Press "Run Weekly Scan" — the model will search the last 7 days for market-relevant statements, check what actually happened after each one, and generate a rhetoric read.</div>
+</main>
+
+<footer>
+  "Forward read" is a qualitative AI interpretation, not a trading signal or financial advice — always framed as analysis of tone and pattern, not certainty. "What markets did after" is based on real search results; if the model can't confirm real aftermath data, it will say so rather than guess. Statements are paraphrased, not quoted verbatim. Scan history is stored privately to this dashboard, visible only to you.
+</footer>
+
+<script>
+const statusLine = document.getElementById('statusLine');
+const scanBtn = document.getElementById('scanBtn');
+const main = document.getElementById('main');
+const tickerTrack = document.getElementById('tickerTrack');
+const historyNote = document.getElementById('historyNote');
+
+const SECTOR_COLORS = ['#E2A63B','#4F8C86','#C4534A','#7C9CBF','#B084CC','#D9A5A0'];
+
+// Standard US sector ETFs — kept consistent so the AI's sector names map
+// reliably to a real, tradeable ticker.
+const SECTOR_TICKERS = {
+  'Energy':'XLE','Financials':'XLF','Tech':'XLK','Technology':'XLK',
+  'Industrials':'XLI','Materials':'XLB','Healthcare':'XLV',
+  'Consumer Discretionary':'XLY','Consumer Staples':'XLP','Utilities':'XLU',
+  'Real Estate':'XLRE','Communication':'XLC','Communication Services':'XLC',
+  'Agriculture':'DBA','Autos':'CARZ','Semiconductors':'SMH','Banks':'KBE',
+  'Defense':'ITA','Airlines':'JETS','Retail':'XRT','Homebuilders':'XHB'
+};
+function tickerFor(sector){ return SECTOR_TICKERS[sector] || null; }
+
+let trendChart = null;
+let currentChart = null;
+let scanHistory = [];
+let storageBroken = false;
+
+function storageAvailable(){
+  return typeof window.storage !== 'undefined' && window.storage !== null && !storageBroken;
+}
+
+function intensityColor(score){
+  if(score >= 7) return '#C4534A';
+  if(score >= 4) return '#E2A63B';
+  return '#4F8C86';
+}
+
+function renderError(msg){
+  main.innerHTML = `<div class="error-box">SCAN FAILED — ${msg}</div>`;
+}
+
+// ---------- Persistence ----------
+async function loadHistory(){
+  if(!storageAvailable()){
+    historyNote.textContent = 'History storage not available in this view';
+    scanHistory = [];
+    renderTrendChart();
+    return;
+  }
+  try{
+    const result = await window.storage.get('scan-history', false);
+    scanHistory = result && result.value ? JSON.parse(result.value) : [];
+  }catch(e){
+    scanHistory = [];
+  }
+  updateHistoryNote();
+  renderTrendChart();
+}
+
+async function saveHistory(){
+  if(!storageAvailable()) return;
+  const trimmed = scanHistory.slice(-40);
+  try{
+    await window.storage.set('scan-history', JSON.stringify(trimmed), false);
+  }catch(e){
+    // This environment's storage bridge sometimes can't persist here.
+    // Fail once, quietly, and keep working from memory for the rest of
+    // this session rather than erroring on every single scan.
+    storageBroken = true;
+    console.warn('Persistent history unavailable in this view — continuing with in-session data only.');
+  }
+}
+
+async function clearHistory(){
+  scanHistory = [];
+  if(storageAvailable()){
+    try{ await window.storage.delete('scan-history', false); }catch(e){}
+  }
+  updateHistoryNote();
+  renderTrendChart();
+}
+
+function exportHistory(){
+  if(!scanHistory.length){
+    statusLine.textContent = 'No scans to export yet';
+    return;
+  }
+  const header = ['Scan Date','Speaker','Role','Statement Date','Rhetoric Type','Intensity','Sector','Ticker','Market Aftermath','Actual Move Magnitude','Forward Read','Historical Precedent'].join('\t');
+  const rows = [header];
+  let rowCount = 0;
+  scanHistory.forEach(scan => {
+    const scanDate = new Date(scan.timestamp).toLocaleDateString();
+    scan.items.forEach(item => {
+      const sectors = (item.sectors && item.sectors.length) ? item.sectors : ['Unclassified'];
+      sectors.forEach(sector => {
+        rowCount++;
+        rows.push([
+          scanDate,
+          item.speaker || '',
+          item.role || '',
+          item.date || '',
+          item.rhetoric_type || '',
+          item.intensity != null ? item.intensity : '',
+          sector,
+          tickerFor(sector) || '',
+          (item.market_aftermath || '').replace(/\t|\n/g, ' '),
+          item.market_move_magnitude != null ? item.market_move_magnitude : '',
+          (item.forward_read || '').replace(/\t|\n/g, ' '),
+          (item.historical_precedent || '').replace(/\t|\n/g, ' ')
+        ].join('\t'));
+      });
+    });
+  });
+  const text = rows.join('\n');
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text)
+      .then(() => { statusLine.textContent = `Copied ${rowCount} rows (one per sector) — paste into the analysis sheet`; })
+      .catch(() => { fallbackCopy(text); });
+  }else{
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); statusLine.textContent = 'Copied — paste into a spreadsheet'; }
+  catch(e){ statusLine.textContent = 'Could not copy — try selecting manually'; }
+  document.body.removeChild(ta);
+}
+
+function updateHistoryNote(){
+  if(storageBroken){
+    historyNote.textContent = `${scanHistory.length} scan${scanHistory.length === 1 ? '' : 's'} this session (not saved between visits here)`;
+    return;
+  }
+  historyNote.textContent = scanHistory.length
+    ? `${scanHistory.length} scan${scanHistory.length === 1 ? '' : 's'} logged`
+    : 'No scan history yet';
+}
+
+// ---------- Charts ----------
+function topSectors(limit){
+  const counts = {};
+  scanHistory.forEach(scan => {
+    scan.items.forEach(item => {
+      (item.sectors || []).forEach(s => { counts[s] = (counts[s] || 0) + 1; });
+    });
+  });
+  return Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, limit).map(e => e[0]);
+}
+
+function renderTrendChart(){
+  if(!scanHistory.length){
+    clearCanvas('trendChart');
+    return;
+  }
+  const sectors = topSectors(5);
+  const dateLabels = scanHistory.map(s => new Date(s.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric'}));
+
+  const datasets = sectors.map((sector, i) => {
+    const data = scanHistory.map(scan => {
+      const matches = scan.items.filter(item => (item.sectors || []).includes(sector));
+      if(!matches.length) return null;
+      return matches.reduce((sum, m) => sum + m.intensity, 0) / matches.length;
+    });
+    return { label: sector, color: SECTOR_COLORS[i % SECTOR_COLORS.length], data };
+  });
+
+  drawLineChart('trendChart', dateLabels, datasets, { yMin:0, yMax:10, legend:true });
+}
+
+function renderCurrentChart(items){
+  const sectorMap = {};
+  items.forEach(item => {
+    (item.sectors || []).forEach(s => {
+      if(!sectorMap[s]) sectorMap[s] = [];
+      sectorMap[s].push(item.intensity);
+    });
+  });
+  const labels = Object.keys(sectorMap);
+  const values = labels.map(s => sectorMap[s].reduce((a,b)=>a+b,0)/sectorMap[s].length);
+  const colors = values.map(v => intensityColor(v));
+  drawBarChart('currentChart', labels, values, colors);
+}
+
+// ---------- Native canvas chart helpers (no external dependencies) ----------
+function setupCanvas(id){
+  const canvas = document.getElementById(id);
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w: rect.width, h: rect.height };
+}
+
+function clearCanvas(id){
+  const { ctx, w, h } = setupCanvas(id);
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#8493A0';
+  ctx.font = '12px IBM Plex Mono, monospace';
+  ctx.fillText('No data yet — run a scan to populate this chart.', 8, h/2);
+}
+
+function drawLineChart(id, labels, datasets, opts){
+  opts = opts || {};
+  const { ctx, w, h } = setupCanvas(id);
+  ctx.clearRect(0, 0, w, h);
+  if(!labels.length){ clearCanvas(id); return; }
+
+  const padL = 30, padR = 8, padT = 10, padB = opts.legend ? 40 : 22;
+  const plotW = w - padL - padR;
+  const plotH = h - padT - padB;
+
+  const allVals = datasets.flatMap(d => d.data.filter(v => v !== null && v !== undefined));
+  const yMin = opts.yMin !== undefined ? opts.yMin : Math.min(...allVals, 0);
+  const yMax = opts.yMax !== undefined ? opts.yMax : Math.max(...allVals, 1);
+  const yRange = (yMax - yMin) || 1;
+
+  // gridlines
+  ctx.strokeStyle = '#28323D';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#8493A0';
+  ctx.font = '9px IBM Plex Mono, monospace';
+  const ySteps = 4;
+  for(let i=0; i<=ySteps; i++){
+    const y = padT + plotH - (plotH * i/ySteps);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w-padR, y); ctx.stroke();
+    const val = yMin + (yRange * i/ySteps);
+    ctx.fillText(val.toFixed(0), 2, y+3);
+  }
+
+  const xStep = labels.length > 1 ? plotW / (labels.length - 1) : 0;
+  const labelEvery = Math.ceil(labels.length / 6);
+  labels.forEach((lab, i) => {
+    if(i % labelEvery !== 0 && i !== labels.length-1) return;
+    const x = padL + xStep * i;
+    ctx.fillText(lab, Math.min(x, w-padR-30), h - padB + 14);
+  });
+
+  datasets.forEach(ds => {
+    ctx.strokeStyle = ds.color;
+    ctx.fillStyle = ds.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    let started = false;
+    ds.data.forEach((v, i) => {
+      if(v === null || v === undefined) { started = false; return; }
+      const x = padL + xStep * i;
+      const y = padT + plotH - ((v - yMin) / yRange) * plotH;
+      if(!started){ ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
+    });
+    ctx.stroke();
+    ds.data.forEach((v, i) => {
+      if(v === null || v === undefined) return;
+      const x = padL + xStep * i;
+      const y = padT + plotH - ((v - yMin) / yRange) * plotH;
+      ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI*2); ctx.fill();
+    });
+  });
+
+  if(opts.legend){
+    let lx = padL;
+    const ly = h - 14;
+    ctx.font = '9px IBM Plex Mono, monospace';
+    datasets.forEach(ds => {
+      ctx.fillStyle = ds.color;
+      ctx.fillRect(lx, ly-7, 8, 8);
+      ctx.fillStyle = '#8493A0';
+      ctx.fillText(ds.label, lx+11, ly);
+      lx += ctx.measureText(ds.label).width + 30;
+    });
+  }
+}
+
+function drawBarChart(id, labels, values, colors){
+  const { ctx, w, h } = setupCanvas(id);
+  ctx.clearRect(0, 0, w, h);
+  if(!labels.length){ clearCanvas(id); return; }
+
+  const padL = 90, padR = 30, padT = 10, padB = 10;
+  const plotW = w - padL - padR;
+  const rowH = (h - padT - padB) / labels.length;
+  const barH = Math.min(rowH * 0.55, 24);
+
+  ctx.font = '11px Inter, sans-serif';
+  labels.forEach((lab, i) => {
+    const y = padT + rowH * i + rowH/2;
+    const val = values[i];
+    const barW = (val / 10) * plotW;
+
+    ctx.fillStyle = '#DCE3E8';
+    ctx.textAlign = 'right';
+    ctx.fillText(lab.length > 14 ? lab.slice(0,13)+'…' : lab, padL - 8, y + 4);
+    ctx.textAlign = 'left';
+
+    ctx.fillStyle = colors[i];
+    const bw = Math.max(barW, 2);
+    ctx.beginPath();
+    if(ctx.roundRect){ ctx.roundRect(padL, y - barH/2, bw, barH, 4); } else { ctx.rect(padL, y-barH/2, bw, barH); }
+    ctx.fill();
+
+    ctx.fillStyle = '#8493A0';
+    ctx.font = '10px IBM Plex Mono, monospace';
+    ctx.fillText(val.toFixed(1), padL + bw + 6, y + 3);
+    ctx.font = '11px Inter, sans-serif';
+  });
+}
+
+// ---------- Feed rendering ----------
+function renderResults(items){
+  if(!items || !items.length){
+    main.innerHTML = '<div class="empty-state">No market-relevant rhetoric found in this scan. Try again shortly.</div>';
+    return;
+  }
+  main.innerHTML = items.map(item => {
+    const color = intensityColor(item.intensity);
+    return `
+    <div class="card">
+      <div class="card-top">
+        <div>
+          <div class="speaker">${item.speaker}</div>
+          <div class="meta">${item.role || ''}${item.date ? ' · ' + item.date : ''}</div>
+        </div>
+        <div class="intensity-badge" style="color:${color}">INTENSITY ${item.intensity}/10 · ${item.rhetoric_type}</div>
+      </div>
+      <div class="statement">${item.statement_summary}</div>
+      <div class="meter"><div class="meter-fill" style="width:${item.intensity*10}%; background:${color}"></div></div>
+      <div class="row-label">Sectors in the blast radius</div>
+      <div class="sectors">${(item.sectors || []).map(s => {
+        const t = tickerFor(s);
+        return `<span class="chip">${s}${t ? ` <span class="ticker-tag">$${t}</span>` : ''}</span>`;
+      }).join('')}</div>
+      <div class="market-read"><span class="label">What markets did after — </span>${item.market_aftermath} <span class="ticker-tag">(actual move: ${item.market_move_magnitude != null ? item.market_move_magnitude : '?'}/10)</span></div>
+      <div class="market-read" style="border-top:none; padding-top:0;"><span class="label">Forward read — </span>${item.forward_read}</div>
+      <div class="precedent">Precedent: ${item.historical_precedent}</div>
+    </div>`;
+  }).join('');
+
+  tickerTrack.innerHTML = [...items, ...items].map(item => {
+    const color = intensityColor(item.intensity);
+    return `<span class="ticker-item"><span class="ticker-dot" style="background:${color}"></span>${item.speaker} · ${item.rhetoric_type} · ${item.intensity}/10</span>`;
+  }).join('');
+
+  renderCurrentChart(items);
+}
+
+async function runScan(){
+  scanBtn.disabled = true;
+  statusLine.innerHTML = '<span class="pulse"></span>Scanning the last week and checking market aftermath…';
+  main.innerHTML = '<div class="empty-state">Scanning in progress…</div>';
+
+  const systemPrompt = `You are the analysis engine for "Media to Market," a brand that reads current-affairs rhetoric for market signal. 
+Use web search to find 3 REAL, significant statements from the LAST 7 DAYS from market-relevant figures: central bankers, finance ministers, trade officials, major CEOs on earnings calls, or heads of state, where the language itself (not just the policy) could move markets.
+For each one, also use web search to find out what the relevant sector or market ACTUALLY DID in the days after the statement — real price movement, not speculation.
+CRITICAL RULES:
+- Never quote verbatim more than a short phrase (under 10 words). Paraphrase the substance of what was said in your own words.
+- Be specific and factual — real names, real dates, real context. Do not invent statements or invent price moves. If you cannot find real aftermath data, say so plainly rather than guessing, and set market_move_magnitude to 0 in that case.
+- "intensity" is 1-10 based on how much the rhetoric itself (tone, certainty, escalation) could move markets, independent of the underlying policy. This is your PREDICTION.
+- "market_move_magnitude" is 0-10, a separate number rating how much the market/sector ACTUALLY moved afterward based on real search results (0 = no notable move, 10 = major move). This is the OUTCOME, used to check whether intensity predictions actually hold up over time — be honest and independent here, do not just echo the intensity score.
+- "rhetoric_type" is a short 2-3 word tag like "Escalation", "Hedged Certainty", "De-escalation Signal", "Forward Guidance Shift".
+- "sectors" should use consistent, short sector names (e.g. "Energy", "Tech", "Financials", "Autos", "Agriculture") so they can be tracked over time — avoid inventing a new sector name each time when a standard one fits.
+- "market_aftermath" is what ACTUALLY happened in the market/sector after the statement, based on real search results, in one sentence.
+- "forward_read" is your forward-looking read on what this rhetoric implies going forward, in one sentence — clearly framed as analysis, not a prediction of certainty.
+
+Respond with ONLY a raw JSON array, no markdown fences, no preamble, no commentary, and no citation markers or footnote brackets like [1] anywhere in the output. Keep every text field to one short sentence. Format:
+[{"speaker":"","role":"","date":"","statement_summary":"","rhetoric_type":"","intensity":0,"market_move_magnitude":0,"sectors":["",""],"market_aftermath":"","forward_read":"","historical_precedent":""}]
+Limit to 3 items to keep the response short enough to complete fully within the token budget. A complete short response is far better than a longer truncated one.`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: [
+          { role: "user", content: "Scan the last 7 days for market-moving rhetoric. For each statement, search separately to confirm what actually happened in the relevant market afterward." }
+        ],
+        tools: [{ type: "web_search_20250305", name: "web_search" }]
+      })
+    });
+
+    const data = await response.json();
+
+    if(data.error){
+      throw new Error(data.error.message || 'API error');
+    }
+
+    const textBlocks = (data.content || [])
+      .filter(block => block.type === 'text')
+      .map(block => block.text)
+      .join('\n');
+
+    let clean = textBlocks.trim().replace(/```json/gi, '').replace(/```/g, '').trim();
+
+    const arrayMatch = clean.match(/\[\s*\{[\s\S]*\}\s*\]/);
+    if(arrayMatch){ clean = arrayMatch[0]; }
+
+    let items;
+    try{
+      items = JSON.parse(clean);
+    }catch(parseErr){
+      const objectMatches = clean.match(/\{[^{}]*\}/g);
+      if(objectMatches && objectMatches.length){
+        items = objectMatches.map(o => { try{ return JSON.parse(o); }catch(e){ return null; } }).filter(Boolean);
+      }
+      if(!items || !items.length){
+        throw new Error('Response could not be parsed as JSON. Raw output: ' + textBlocks.slice(0, 400));
+      }
+    }
+
+    renderResults(items);
+
+    scanHistory.push({ timestamp: new Date().toISOString(), items });
+    await saveHistory();
+    updateHistoryNote();
+    renderTrendChart();
+
+    statusLine.textContent = `Last scan complete · ${items.length} statements analyzed`;
+
+  }catch(err){
+    console.error(err);
+    renderError(err.message || 'Could not parse response. Try scanning again.');
+    statusLine.textContent = 'Scan failed — try again';
+  }finally{
+    scanBtn.disabled = false;
+  }
+}
+
+try{ loadHistory(); }catch(e){ console.error('loadHistory failed', e); }
+</script>
+
+</body>
+</html>
