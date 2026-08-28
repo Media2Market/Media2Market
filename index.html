@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="Media to Market studies whether the rhetoric of influential figures carries measurable information about subsequent market behaviour, independent of the underlying event.">
+<title>Media to Market — Where Rhetoric Becomes Signal</title>
+<style>
+:root{--ink:#0E141B;--ink2:#161E27;--line:#28323D;--text:#DCE3E8;--dim:#8493A0;--amber:#E2A63B;--red:#C4534A;--teal:#4F8C86}
+html{overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.ticker{border-bottom:1px solid var(--line);background:var(--ink2);overflow:hidden;white-space:nowrap;padding:9px 0}
+.ticker-track{display:inline-flex;gap:40px;animation:scroll 38s linear infinite;padding-left:100%}
+@keyframes scroll{to{transform:translateX(-100%)}}
+.ticker-item{font-size:12px;color:var(--dim);display:inline-flex;align-items:center;gap:8px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block;flex-shrink:0}
+header{padding:54px 0 32px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:clamp(38px,7vw,68px);line-height:1.02;letter-spacing:-.02em;max-width:850px}
+h1 em{font-weight:400;font-style:italic;color:var(--dim)}
+.sub{margin-top:20px;max-width:700px;color:var(--dim);font-size:16px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{border-radius:4px;padding:13px 18px;font-size:12px;letter-spacing:.04em;font-family:ui-monospace,monospace;cursor:pointer}
+.primary{background:var(--amber);color:var(--ink);border:0;font-weight:700}
+.secondary{background:transparent;color:var(--dim);border:1px solid var(--line)}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.status{margin-top:14px;color:var(--dim);font-size:12px;word-break:break-word}
+.section-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:44px 0 6px}
+.section-title{font-family:Georgia,"Times New Roman",serif;font-size:24px;margin-bottom:6px}
+.section-note{font-size:12px;color:var(--dim);max-width:640px;line-height:1.6;margin-bottom:18px}
+.grid{display:grid;gap:14px}
+.index-grid{grid-template-columns:repeat(3,1fr)}
+.index-card{background:var(--ink2);border:1px solid var(--line);border-radius:7px;padding:18px;min-width:0}
+.index-name{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.index-value{font-family:Georgia,serif;font-size:30px;margin-top:8px}
+.index-value.insufficient{font-size:15px;color:var(--dim);font-family:Inter,sans-serif}
+.index-note{font-size:10.5px;color:var(--dim);margin-top:8px;line-height:1.5}
+.panel{background:var(--ink2);border:1px solid var(--line);border-radius:7px;padding:24px;margin-bottom:18px}
+.dimensions{grid-template-columns:repeat(4,1fr)}
+.dimension{padding:14px;border:1px solid var(--line);border-radius:5px;min-width:0}
+.dimension .lbl{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.dimension strong{display:block;font-size:20px;margin-top:6px}
+.dimension .na{color:var(--dim);font-size:13px;font-weight:400}
+.bar{height:5px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:8px}
+.fill{height:100%;background:var(--amber)}
+.feed{margin-top:6px}
+.empty{padding:44px 22px;border:1px dashed var(--line);border-radius:7px;text-align:center;color:var(--dim);line-height:1.7;word-break:break-word;white-space:pre-wrap}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:7px;padding:24px;margin-bottom:14px}
+.card-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.speaker{font-family:Georgia,serif;font-size:22px}
+.meta{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.6}
+.badge{font-size:10px;border:1px solid currentColor;border-radius:100px;padding:6px 9px;white-space:nowrap;height:fit-content}
+.event-line{font-size:12px;color:var(--dim);margin-top:14px;font-style:italic}
+.statement{font-size:15px;line-height:1.7;margin:10px 0 14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.chip{font-size:10px;color:var(--dim);border:1px solid var(--line);background:var(--ink);padding:5px 9px;border-radius:100px}
+.read{border-top:1px solid var(--line);padding-top:13px;margin-top:12px;font-size:14px;line-height:1.65}
+.read b{color:var(--amber)}
+.dim-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px}
+.mini{background:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px;min-width:0}
+.mini span{display:block;font-size:9px;text-transform:uppercase;color:var(--dim)}
+.mini strong{font-size:14px}
+.card-sources{margin-top:14px;font-size:11px;display:flex;gap:14px;flex-wrap:wrap}
+.card-sources a{color:var(--amber);text-decoration:none;word-break:break-all}
+.card-sources .none{color:var(--dim)}
+.benchmark-note{font-size:10.5px;color:var(--dim);margin-top:10px;font-style:italic}
+.method{grid-template-columns:1fr 1fr}
+.method p{color:var(--dim);line-height:1.75;font-size:13.5px}
+.method h3{font-family:Georgia,serif;font-size:17px;margin-bottom:8px}
+.method ul{margin:8px 0 0 18px;color:var(--dim);font-size:13px;line-height:1.8}
+.foot{padding:32px 0 60px;color:var(--dim);font-size:12px;line-height:1.7;border-top:1px solid var(--line);margin-top:48px}
+@media(max-width:860px){.index-grid{grid-template-columns:1fr 1fr}.dimensions{grid-template-columns:1fr 1fr}.dim-row{grid-template-columns:1fr 1fr}.method{grid-template-columns:1fr}}
+@media(max-width:520px){.index-grid{grid-template-columns:1fr}.dimensions{grid-template-columns:1fr}.card-top{flex-direction:column}.dim-row{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="ticker"><div class="ticker-track mono" id="ticker"><span class="ticker-item"><span class="dot"></span>MEDIA TO MARKET · RHETORIC → SIGNAL → MARKET RESPONSE</span></div></div>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow mono">MEDIA TO MARKET · RESEARCH PROTOTYPE</div>
+  <h1>Where rhetoric <em>becomes signal.</em></h1>
+  <p class="sub">Media to Market studies whether the rhetorical form of statements by influential political, economic and corporate figures carries measurable information about subsequent market behaviour — independent of how important the underlying event already was.</p>
+  <div class="hero-actions">
+    <button class="btn primary" id="scanBtn">RUN WEEKLY SCAN</button>
+    <button class="btn secondary" id="exportBtn">EXPORT DATASET (CSV)</button>
+    <button class="btn secondary" id="clearBtn">CLEAR LOCAL HISTORY</button>
+  </div>
+  <div class="status mono" id="status">Prototype ready. Run a scan to analyze the last 7 days.</div>
+</header>
+
+<div class="section-eyebrow mono">RESEARCH INDICES</div>
+<div class="section-title">Composite signal, across all logged observations</div>
+<div class="section-note">Each index is a plain average of one rhetoric feature across every observation logged in this browser. An index only displays once enough qualifying observations exist — otherwise it is marked insufficient data rather than shown with false precision.</div>
+<div class="grid index-grid" id="indexGrid"></div>
+
+<div class="section-eyebrow mono">LANGUAGE FEATURES</div>
+<div class="section-title">Current scan — rhetoric profile</div>
+<div class="section-note">Scores describe rhetorical form, not whether the underlying policy is good, bad, true, or important. Features marked N/A did not apply to any statement in this scan.</div>
+<div class="panel"><div class="grid dimensions" id="dimensions"></div></div>
+
+<div class="section-eyebrow mono">LIVE RESEARCH FEED</div>
+<div class="section-title">Market-relevant statements</div>
+<div class="section-note">Prototype aftermath uses web-verified reporting rather than structured price data. Production should replace this with timestamped market data across fixed event windows and abnormal returns versus benchmark.</div>
+<div class="feed" id="feed"><div class="empty">No scan yet. The system will identify recent statements, score rhetorical features independently of market outcome, map sector exposure, and compare rhetoric intensity with observed aftermath.</div></div>
+
+<div class="grid method" style="margin-top:44px">
+  <div class="panel">
+    <div class="eyebrow mono">THE HYPOTHESIS</div>
+    <h3>Does language add information?</h3>
+    <p>The core research question is not whether news moves markets — it is whether the rhetorical form of a statement adds explanatory or predictive information beyond the underlying event alone. A high-rhetoric statement that produces no market move is a valid, informative result, not a failure of the model.</p>
+  </div>
+  <div class="panel">
+    <div class="eyebrow mono">METHODOLOGY</div>
+    <h3>How Rhetoric Intensity is computed</h3>
+    <p>Rhetoric Intensity is the plain average of whichever applicable features — certainty, escalation, urgency, hedging, novelty, confidence, threat/coercion, policy commitment — were scored for that statement. It is calculated deterministically, not asked of the model as a separate number.</p>
+    <ul>
+      <li>Optimism/pessimism is tracked separately as a direction, not averaged into intensity</li>
+      <li>Threat/coercion and policy commitment are null (excluded) when not applicable, not scored as zero</li>
+      <li>Analysis Confidence measures the model's confidence in its own classification — a different thing from the speaker's expressed confidence</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel" id="sourcePanel" style="display:none">
+  <div class="eyebrow mono">SCAN SOURCES</div>
+  <div id="sources" style="margin-top:10px"></div>
+</div>
+
+<div class="foot">
+  Media to Market is an experimental research and analytics project. It does not provide investment advice or trading signals. All scores are model-generated research features validated against real search results where possible, and should not be treated as predictive until tested against structured market data. "Research signal," "association," and "forward hypothesis" describe observed patterns, not forecasts.
+</div>
+</div>
+
+<script>
+const scanBtn = document.getElementById('scanBtn');
+const statusEl = document.getElementById('status');
+const feed = document.getElementById('feed');
+const dimensionsEl = document.getElementById('dimensions');
+const indexGrid = document.getElementById('indexGrid');
+
+let history = [];
+try { history = JSON.parse(localStorage.getItem('m2m-history') || '[]'); } catch(e) { history = []; }
+
+// The 8 magnitude-type features shown in the "current scan" grid. Order
+// matches the methodology note above.
+const FEATURE_KEYS = [
+  ['certainty','Certainty'], ['escalation','Escalation'], ['urgency','Urgency'],
+  ['hedging','Hedging'], ['novelty','Novelty'], ['confidence','Confidence'],
+  ['threat_coercion','Threat/Coercion'], ['policy_commitment','Policy Commitment']
+];
+
+function esc(s){ return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+function color(v){ return v >= 7 ? '#C4534A' : v >= 4 ? '#E2A63B' : '#4F8C86'; }
+function avg(arr){ const v = arr.filter(x => typeof x === 'number' && !Number.isNaN(x)); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; }
+
+function allObservations(){ return history.flatMap(h => h.items || []); }
+
+// ---------- Index layer ----------
+// Each index definition: which feature to average, an optional filter over
+// observations (role/org/sector matching), and the minimum observation
+// count required before the index is considered meaningful enough to show.
+const INDEX_DEFS = [
+  {
+    name: 'Global Rhetoric Index',
+    threshold: 5,
+    note: 'Mean composite Rhetoric Intensity across every logged observation.',
+    filter: () => true,
+    value: o => o.composite_intensity
+  },
+  {
+    name: 'Escalation Index',
+    threshold: 5,
+    note: 'Mean escalation score across every logged observation.',
+    filter: () => true,
+    value: o => o.rhetoric_features?.escalation
+  },
+  {
+    name: 'Economic Confidence Index',
+    threshold: 5,
+    note: 'Mean expressed confidence score across every logged observation.',
+    filter: () => true,
+    value: o => o.rhetoric_features?.confidence
+  },
+  {
+    name: 'Trade Friction Index',
+    threshold: 3,
+    note: 'Mean threat/coercion score, limited to trade-exposed sectors or trade-related roles.',
+    filter: o => {
+      const tradeSectors = ['Industrials','Autos','Agriculture','Materials'];
+      const roleText = `${o.role||''} ${o.organization||''}`.toLowerCase();
+      return (o.sectors||[]).some(s => tradeSectors.includes(s)) || roleText.includes('trade');
+    },
+    value: o => o.rhetoric_features?.threat_coercion
+  },
+  {
+    name: 'Monetary Hawkishness Index',
+    threshold: 3,
+    note: 'Mean certainty score, limited to central-bank/monetary-policy roles.',
+    filter: o => /federal reserve|central bank|ecb|bank of england|monetary/i.test(`${o.role||''} ${o.organization||''}`),
+    value: o => o.rhetoric_features?.certainty
+  },
+  {
+    name: 'Geopolitical Risk Index',
+    threshold: 3,
+    note: 'Mean escalation score, limited to heads of state and foreign-policy roles.',
+    filter: o => /president|prime minister|foreign minister|head of state|geopolitic/i.test(`${o.role||''} ${o.organization||''}`),
+    value: o => o.rhetoric_features?.escalation
+  }
+];
+
+function renderIndices(){
+  const obs = allObservations();
+  indexGrid.innerHTML = INDEX_DEFS.map(def => {
+    const qualifying = obs.filter(def.filter).map(def.value).filter(v => typeof v === 'number');
+    const enough = qualifying.length >= def.threshold;
+    const value = enough ? avg(qualifying) : null;
+    return `<div class="index-card">
+      <div class="index-name mono">${esc(def.name)}</div>
+      <div class="index-value ${enough ? '' : 'insufficient'}">${enough ? value.toFixed(1) + '/10' : `Insufficient data (${qualifying.length}/${def.threshold})`}</div>
+      <div class="index-note">${esc(def.note)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ---------- Current-scan feature grid ----------
+function renderDimensions(items){
+  dimensionsEl.innerHTML = FEATURE_KEYS.map(([key,label]) => {
+    const vals = items.map(x => x.rhetoric_features?.[key]).filter(v => typeof v === 'number');
+    const v = avg(vals);
+    return `<div class="dimension">
+      <div class="lbl mono">${label}</div>
+      ${v === null
+        ? `<strong class="na">N/A this scan</strong>`
+        : `<strong>${v.toFixed(1)}</strong><div class="bar"><div class="fill" style="width:${v*10}%"></div></div>`}
+    </div>`;
+  }).join('');
+}
+
+// ---------- Feed ----------
+function renderFeed(items){
+  if(!items.length){
+    feed.innerHTML = '<div class="empty">No market-relevant items returned.</div>';
+    return;
+  }
+  feed.innerHTML = items.map(x => {
+    const rf = x.rhetoric_features || {};
+    const intensity = x.composite_intensity;
+    const dims = FEATURE_KEYS.map(([k,l]) => `<div class="mini"><span class="mono">${l}</span><strong>${rf[k] ?? '—'}</strong></div>`).join('');
+    const sourceLine = `<div class="card-sources mono">
+        ${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener noreferrer">Statement source ↗</a>` : `<span class="none">Statement source: not identified</span>`}
+        ${x.verification_source_url ? `<a href="${esc(x.verification_source_url)}" target="_blank" rel="noopener noreferrer">Aftermath verification ↗</a>` : `<span class="none">Aftermath verification: not identified</span>`}
+      </div>`;
+    return `<article class="card">
+      <div class="card-top">
+        <div>
+          <div class="speaker">${esc(x.speaker)}</div>
+          <div class="meta">${esc(x.role)}${x.organization ? ', ' + esc(x.organization) : ''}${x.country ? ' · ' + esc(x.country) : ''}<br>${esc(x.statement_date)} · Analysis confidence: ${esc(x.analysis_confidence ?? '—')}/10</div>
+        </div>
+        <div class="badge mono" style="color:${color(intensity)}">${esc(x.rhetoric_type)} · ${intensity != null ? intensity.toFixed(1) : '—'}/10</div>
+      </div>
+      <div class="event-line">${esc(x.underlying_event)}</div>
+      <div class="statement">${esc(x.statement_summary)}</div>
+      <div class="chips">${(x.sectors||[]).map((s,i) => `<span class="chip mono">${esc(s)}${x.tickers?.[i] ? ' $' + esc(x.tickers[i]) : ''}</span>`).join('')}</div>
+      <div class="dim-row">${dims}</div>
+      <div class="read"><b>Observed aftermath — </b>${esc(x.market_aftermath)} <span class="mono" style="color:var(--dim)">(${esc(x.outcome?.observed_move_magnitude)}/10${x.outcome?.verified ? ', verified' : ', unverified'})</span></div>
+      <div class="read"><b>Forward research hypothesis — </b>${esc(x.forward_hypothesis)}</div>
+      <div class="read"><b>Historical analogue — </b>${esc(x.historical_precedent)}</div>
+      ${sourceLine}
+      <div class="benchmark-note">Benchmark: ${esc(x.benchmark)}</div>
+    </article>`;
+  }).join('');
+
+  document.getElementById('ticker').innerHTML = [...items, ...items].map(x =>
+    `<span class="ticker-item"><span class="dot" style="background:${color(x.composite_intensity)}"></span>${esc(x.speaker)} · ${esc(x.rhetoric_type)} · ${x.composite_intensity != null ? x.composite_intensity.toFixed(1) : '—'}/10</span>`
+  ).join('');
+}
+
+function renderSources(sources){
+  const panel = document.getElementById('sourcePanel');
+  if(sources && sources.length){
+    panel.style.display = 'block';
+    document.getElementById('sources').innerHTML = [...new Set(sources)]
+      .map(u => `<div style="margin:6px 0"><a href="${esc(u)}" target="_blank" rel="noopener noreferrer" class="mono" style="color:var(--amber);font-size:12px;word-break:break-all">${esc(u)}</a></div>`)
+      .join('');
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
+function render(items, sources){
+  renderIndices();
+  renderDimensions(items || []);
+  renderFeed(items || []);
+  if(sources) renderSources(sources);
+}
+
+async function runScan(){
+  scanBtn.disabled = true;
+  statusEl.textContent = 'Scanning current rhetoric and market aftermath…';
+  feed.innerHTML = '<div class="empty">Research scan in progress…</div>';
+  try{
+    const r = await fetch('/api/scan', { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
+    if(!r.ok){
+      // If the response isn't JSON (e.g. a timeout or crash page), report the
+      // HTTP status plainly instead of letting a JSON-parse error produce a
+      // confusing generic browser message.
+      let msg = `Server returned ${r.status}`;
+      try{ const errData = await r.json(); if(errData.error) msg = errData.error; }catch(parseErr){ /* body wasn't JSON, keep status message */ }
+      throw new Error(msg);
+    }
+    const data = await r.json();
+    const items = data.items || [];
+    history.push({ timestamp: data.scan_timestamp || new Date().toISOString(), items });
+    history = history.slice(-52);
+    try{ localStorage.setItem('m2m-history', JSON.stringify(history)); }
+    catch(e){ statusEl.textContent = 'Scan complete, but local storage failed to save — history will not persist after reload.'; }
+    render(items, data.sources || []);
+    statusEl.textContent = `Scan complete · ${items.length} observations logged · ${new Date().toLocaleString()}`;
+  }catch(e){
+    feed.innerHTML = `<div class="empty">SCAN FAILED — ${esc(e.message)}</div>`;
+    statusEl.textContent = 'Scan failed.';
+  }finally{
+    scanBtn.disabled = false;
+  }
+}
+
+function exportData(){
+  if(!history.length){ statusEl.textContent = 'No data to export yet.'; return; }
+  const headers = [
+    'observation_id','scan_timestamp','speaker','role','organization','country',
+    'underlying_event','statement_date','statement_summary','source_url','source_type',
+    'rhetoric_type','certainty','escalation','urgency','hedging','novelty','confidence',
+    'threat_coercion','policy_commitment','optimism_pessimism','composite_intensity',
+    'analysis_confidence','sectors','tickers','benchmark','market_aftermath',
+    'verification_source_url','observed_move_magnitude','verified','historical_precedent',
+    'forward_hypothesis'
+  ];
+  const rows = [headers];
+  history.forEach(h => (h.items||[]).forEach(x => {
+    const rf = x.rhetoric_features || {};
+    rows.push([
+      x.observation_id, x.scan_timestamp, x.speaker, x.role, x.organization, x.country,
+      x.underlying_event, x.statement_date, x.statement_summary, x.source_url, x.source_type,
+      x.rhetoric_type, rf.certainty, rf.escalation, rf.urgency, rf.hedging, rf.novelty, rf.confidence,
+      rf.threat_coercion, rf.policy_commitment, x.optimism_pessimism, x.composite_intensity,
+      x.analysis_confidence, (x.sectors||[]).join('|'), (x.tickers||[]).join('|'), x.benchmark,
+      x.market_aftermath, x.verification_source_url, x.outcome?.observed_move_magnitude,
+      x.outcome?.verified, x.historical_precedent, x.forward_hypothesis
+    ]);
+  }));
+  const csv = rows.map(r => r.map(v => '"' + String(v ?? '').replaceAll('"','""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'media2market-research-dataset.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+scanBtn.addEventListener('click', runScan);
+document.getElementById('exportBtn').addEventListener('click', exportData);
+document.getElementById('clearBtn').addEventListener('click', () => {
+  history = [];
+  try{ localStorage.removeItem('m2m-history'); }catch(e){}
+  render([], []);
+  statusEl.textContent = 'Local research history cleared.';
+});
+
+render(history.length ? history[history.length-1].items : [], []);
+</script>
+</body>
+</html>
